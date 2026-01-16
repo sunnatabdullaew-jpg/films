@@ -3,16 +3,13 @@ const search = document.querySelector(".search");
 const cards = document.querySelector(".cards");
 const loading = document.querySelector(".loading");
 
-try {
-  getMovie(api);
-} catch (error) {
-  throw new Error(error);
-}
+getMovie(api);
 
-function getMovie(api) {
+async function getMovie(api) {
   loading.innerHTML = "";
   cards.innerHTML = "";
-  axios.get(api).then((data) => {
+  try {
+    const data = await axios.get(api);
     console.log(data.data);
     const request = data.data;
     request.Search.map((item, index) => {
@@ -25,7 +22,9 @@ function getMovie(api) {
     
   `;
     });
-  });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 search.addEventListener("change", (e) => {
